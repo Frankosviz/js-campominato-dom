@@ -1,4 +1,44 @@
-// Inizio creando una funzione che assocerò al change del form
+    // Variabili in global scope
+
+    const levelEl = document.getElementById("level");
+    levelEl.addEventListener("change", play);
+    let score = 0;
+    const NUM_BOMBS = 16;
+    let gameOver = false;
+
+
+function play() {
+    // Creo variabile playground e associo a html
+    const playgroundEl = document.getElementById('playground');
+    // Gli scrivo dentro testo vuoto...
+    playgroundEl.innerHTML = '';
+    // Creo variabile per messaggio del risultato
+    const messageEl = document.getElementById('result');
+    // Gli do content vuoto...
+    messageEl.innerHTML = '';
+    // Utilizzo le variabili flag create in precedenza
+    score = 0;
+    gameOver = false;
+  
+    let cellsPerRow;
+    let cellsNumber = setLevel();
+    //eventuale controllo
+  
+    let bombList = generateBombs(cellsNumber);
+    
+    console.log(bombList);
+    cellsPerRow  = Math.sqrt(cellsNumber);
+  
+    const max_attempt = cellsNumber - NUM_BOMBS;
+    
+    for(let i = 1; i <= cellsNumber; i++){
+      const square = drawSquare(cellsPerRow, i, bombList, max_attempt);
+      playgroundEl.appendChild(square);
+    }
+  
+  }
+
+// Creo una funzione che assocerò al change del form
 
 function setLevel(){
     const level = levelEl.value;    
@@ -19,6 +59,9 @@ function setLevel(){
       }
       return cellsNumber;{}
 }
+console.log(setLevel);
+
+// Creo la funzione con cui 'disegnerò i quadrati'
 
 function drawSquare(div, content, bombs, maxscore){
     // Creo newSquare grazie alla quale aggiungerò i quadrati
@@ -30,7 +73,9 @@ function drawSquare(div, content, bombs, maxscore){
     // La dimensione gia data in CSS...
     newSquare.innerHTML = `<span class="invisible"> ${content} </span>`;
     // Ed il contenuto inizialmente invisibile.
+    return newSquare;
 }
+
 
 
 
