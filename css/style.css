@@ -1,0 +1,38 @@
+* {
+    font-family: "Montserrat", sans-serif; 
+}
+
+.grid {
+    width: 1000px;
+    height: 1000px;
+    border: 1px solid black;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-wrap: wrap;
+}
+
+.square {
+    width: calc(100% / 10);
+    height: calc(100% / 10);
+    border: 1px solid black;
+    cursor: crosshair;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: black;
+    text-align: center;
+}
+
+.square:hover{
+    background-color: rgb(197, 196, 196);
+}
+
+.bg-aqua {
+    background-color: aqua;
+}
+
+.bg-white {
+    background-color: white;
+}
