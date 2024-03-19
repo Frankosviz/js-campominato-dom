@@ -1,38 +1,44 @@
-* {
-    font-family: "Montserrat", sans-serif; 
+:root{
+	--ms-primary-color-dark: #051e34;
+	--ms-box-dim: calc(500px / 10);
 }
 
-.grid {
-    width: 1000px;
-    height: 1000px;
-    border: 1px solid black;
-    margin: 0 auto;
-    display: flex;
-    justify-content: center;
-    align-content: center;
-    flex-wrap: wrap;
+.cf-debug{
+	border: 1px solid red;
 }
-
-.square {
-    width: calc(100% / 10);
-    height: calc(100% / 10);
-    border: 1px solid black;
-    cursor: crosshair;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: black;
-    text-align: center;
+/* general */
+body{
+	font-family: 'Roboto', sans-serif;
 }
-
-.square:hover{
-    background-color: rgb(197, 196, 196);
+header, footer{
+	height: 70px;
+	padding:5px;
 }
-
-.bg-aqua {
-    background-color: aqua;
+main{
+	height: calc(100% - 140px);
 }
-
-.bg-white {
-    background-color: white;
+#playground{
+	margin: 0 auto;
+	width:500px;
+	height:500px;
+	display: flex;
+	flex-flow: row wrap;
+}
+.box{
+  background-color: grey;
+  color: white;
+  width: var(--ms-box-dim);
+  height: var(--ms-box-dim);
+  border: 1px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.box.safe{
+	background-color: green;
+	color: white;          
+}
+.box.unsafe{
+	background-color: rgb(228, 20, 20);
+	color: black;
 }

@@ -28,4 +28,4 @@ function generateNewGridSquare(content){
         square.classList.add('square', 'bg-aqua');
         console.log(index + 1);
         });
-    
+    }
