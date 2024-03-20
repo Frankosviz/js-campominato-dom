@@ -1,51 +1,46 @@
+
     // Variabili in global scope
 
     const levelEl = document.getElementById("level");
+
     levelEl.addEventListener("change", play);
     let score = 0;
     const NUM_BOMBS = 16;
     let gameOver = false;
 
 
-function play() {
-    // Creo variabile playground e associo a html
-    const playgroundEl = document.getElementById('playground');
-    // Gli scrivo dentro testo vuoto...
-    playgroundEl.innerHTML = '';
-    // Creo variabile per messaggio del risultato
-    const messageEl = document.getElementById('result');
-    // Gli do content vuoto...
-    messageEl.innerHTML = '';
-    // Utilizzo le variabili flag create in precedenza
-    score = 0;
-    gameOver = false;
+  function play() {
+  const playgroundEl = document.getElementById('playground');
+  playgroundEl.innerHTML = '';
+  const messageEl = document.getElementById('result');
+  messageEl.innerHTML = '';
+  score = 0;
+  gameOver = false;
+
+  let cellsPerRow;
+  let cellsNumber = setLevel();
+  //eventuale controllo
+
+  let bombList = generateBombs(cellsNumber);
   
-    let cellsPerRow;
-    let cellsNumber = setLevel();
-    //eventuale controllo
+  console.log(bombList);
+  cellsPerRow  = Math.sqrt(cellsNumber);
+
+  const max_attempt = cellsNumber - NUM_BOMBS;
   
-    let bombList = generateBombs(cellsNumber);
-    
-    console.log(bombList);
-    cellsPerRow  = Math.sqrt(cellsNumber);
-  
-    const max_attempt = cellsNumber - NUM_BOMBS;
-    
-    for(let i = 1; i <= cellsNumber; i++){
-      const square = drawSquare(cellsPerRow, i, bombList, max_attempt);
-      playgroundEl.appendChild(square);
-    }
-  
+  for(let i = 1; i <= cellsNumber; i++){
+    const square = drawSquare(cellsPerRow, i, bombList, max_attempt);
+    playgroundEl.appendChild(square);
   }
+
+}
 
 // Creo una funzione che assocerò al change del form
 
 function setLevel(){
     const level = levelEl.value;    
     let cellsNumber;
-    // La variabile serve a determinare il valore di levelEl e associarlo al livello di difficoltà che sceglierà l\utente
     switch (level) {
-        // usiamo lo switch
         case "easy":
         // default:
           cellsNumber = 100;
@@ -57,27 +52,83 @@ function setLevel(){
             cellsNumber = 49;
             break;
       }
-      return cellsNumber;{}
+      return cellsNumber;
 }
-console.log(setLevel);
+
+
+
+/**
+ * drawSquare
+ * funzione che crea elemento html div (square) e lo ritorna
+ * 
+ * necessita di una classe per il qudrato di nome 'box'
+ * @param {*} dim 
+ * @param {*} content 
+ * @returns 
+ */
 
 // Creo la funzione con cui 'disegnerò i quadrati'
 
-function drawSquare(div, content, bombs, maxscore){
-    // Creo newSquare grazie alla quale aggiungerò i quadrati
-    const newSquare = document.getElementById('div');
-    // Prendendo il div...
+function drawSquare(dim, content, bombs, maxscore){
+    const newSquare = document.createElement('div');
     newSquare.classList.add('box');
-    // Assegnandogli classe box creata nel css...
     newSquare.style.setProperty('--ms-box-dim', `calc(500px / ${dim} )`);
-    // La dimensione gia data in CSS...
-    newSquare.innerHTML = `<span class="invisible"> ${content} </span>`;
-    // Ed il contenuto inizialmente invisibile.
-    return newSquare;
+    newSquare.innerHTML = `
+    <span class="invisible">${content}</span>
+    `;
     newSquare.addEventListener('click', function(){
-      if(gameOver) return;
-    })
+        if(gameOver) return;
+        if(bombs.includes(content)){
+          newSquare.classList.add('unsafe'); 
+          newSquare.innerHTML = `<i class="fa-solid fa-bomb"></i>`;
+          endGame(true, maxscore, bombs);
+        } else {
+          newSquare.classList.add('safe');
+          endGame(false, maxscore, bombs);         
+        } 
+      
+    },{ once: true });
+    return newSquare;
+}
+
+  function generateBombs(numCells){
+    let bomsArray = [];
+    let counter = 0;
+    while(bomsArray.length < NUM_BOMBS && counter < 100){
+      let bomb = getRndInteger(1, numCells);
+      if(!bomsArray.includes(bomb)) {
+        bomsArray.push(bomb);
+      }
+      counter++;
+    }  
+    return bomsArray;
+  }
+
+  function endGame(end, maxscore,bombs){
+    const messageEl = document.getElementById('result');
+    let message = '';
+    if(end) {
+      gameOver = true;
+      message += 'Hai perso ritenta !!!!';
+    } else {
+      score++;
+      if (score === maxscore){
+        message += 'Hai vinto !!!!';
+        gameOver = true;
+      }
     }
+    if(gameOver){
+      const boxes = document.querySelectorAll('.box');
+      for(let i = 0; i < boxes.length; i++){
+        if(bombs.includes(i + 1)){
+          boxes[i].classList.add('unsafe'); 
+          boxes[i].innerHTML = `<i class="fa-solid fa-bomb"></i>`;
+        }
+      }
+    }
+    message += `<h4>Il tuo punteggio è: ${score}</h4>`;
+    messageEl.innerHTML = message;
+  }
 
 
 
