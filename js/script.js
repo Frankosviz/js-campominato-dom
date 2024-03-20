@@ -74,7 +74,10 @@ function drawSquare(div, content, bombs, maxscore){
     newSquare.innerHTML = `<span class="invisible"> ${content} </span>`;
     // Ed il contenuto inizialmente invisibile.
     return newSquare;
-}
+    newSquare.addEventListener('click', function(){
+      if(gameOver) return;
+    })
+    }
 
 
 
