@@ -8,26 +8,36 @@
     const NUM_BOMBS = 16;
     let gameOver = false;
 
+// Creo la variabile principale di gioco
 
   function play() {
+    // Prendo il campo da gioco e gli scrivo content vuoto
   const playgroundEl = document.getElementById('playground');
   playgroundEl.innerHTML = '';
+  // Prendo il div risultato e gli scrivo content vuoto per ora
   const messageEl = document.getElementById('result');
   messageEl.innerHTML = '';
+
+  // Inserisco le mie variabili risultato e flag
   score = 0;
   gameOver = false;
 
+  // Do le variabili interne allo scope function play
   let cellsPerRow;
   let cellsNumber = setLevel();
   //eventuale controllo
 
+  // vado di variabili per generare le bombe
+
   let bombList = generateBombs(cellsNumber);
   
   console.log(bombList);
+  // Con il console log mi stamperà il numero randomico di bombe in console ogni volta
   cellsPerRow  = Math.sqrt(cellsNumber);
 
   const max_attempt = cellsNumber - NUM_BOMBS;
   
+  // con il ciclo for vado a creare le celle dove andranno disegnati i quadrati contenenti bombe e numeri
   for(let i = 1; i <= cellsNumber; i++){
     const square = drawSquare(cellsPerRow, i, bombList, max_attempt);
     playgroundEl.appendChild(square);
@@ -68,14 +78,16 @@ function setLevel(){
  */
 
 // Creo la funzione con cui 'disegnerò i quadrati'
-
+// Assegno come argomento alla funzione i parametri che ho ricavato sopra
 function drawSquare(dim, content, bombs, maxscore){
+  // Vado a selezionare il quadrato che mi sevirà per l'aggiunta della classe box
     const newSquare = document.createElement('div');
     newSquare.classList.add('box');
     newSquare.style.setProperty('--ms-box-dim', `calc(500px / ${dim} )`);
     newSquare.innerHTML = `
     <span class="invisible">${content}</span>
     `;
+  // Creo l'evento click che farà scaturire la funzione game-over
     newSquare.addEventListener('click', function(){
         if(gameOver) return;
         if(bombs.includes(content)){
@@ -90,6 +102,7 @@ function drawSquare(dim, content, bombs, maxscore){
     },{ once: true });
     return newSquare;
 }
+// Funzione che genera le mie 16 bombe randomiche
 
   function generateBombs(numCells){
     let bomsArray = [];
@@ -104,6 +117,8 @@ function drawSquare(dim, content, bombs, maxscore){
     return bomsArray;
   }
 
+  // Funzione che determina la fine del gioco
+  // Se clicco sulla bomba avrò perso, se clicco su tutte le caselle 'libere' avrò vinto
   function endGame(end, maxscore,bombs){
     const messageEl = document.getElementById('result');
     let message = '';
